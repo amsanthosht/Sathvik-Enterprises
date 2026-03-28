@@ -1,0 +1,17 @@
+/* ──── Footer ──── */
+.footer { background: var(--gray-900); padding: 3.5rem 0 0; color: rgba(255,255,255,.7); }
+.footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 2.5rem; padding-bottom: 3rem; }
+.footer-logo-icon { font-size: 2rem; display: block; margin-bottom: .25rem; }
+.footer-logo-name { color: var(--white); font-size: 1.15rem; font-weight: 800; display: block; margin-bottom: .25rem; }
+.footer-brand p { font-size: .87rem; line-height: 1.6; margin-top: .5rem; }
+.footer-links h4, .footer-contact h4 { color: var(--white); font-size: .9rem; font-weight: 700; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: .08em; }
+.footer-links, .footer-contact { display: flex; flex-direction: column; gap: .6rem; }
+.footer-links a, .footer-contact a, .footer-contact span {
+  font-size: .87rem; color: rgba(255,255,255,.6); text-decoration: none; transition: color .2s;
+}
+.footer-links a:hover, .footer-contact a:hover { color: var(--yellow); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding: 1.25rem 0; text-align: center; }
+.footer-bottom p { font-size: .82rem; color: rgba(255,255,255,.4); }
+
+@media (max-width: 1024px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px)  { .footer-inner { grid-template-columns: 1fr; } }

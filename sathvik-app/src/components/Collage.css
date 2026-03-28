@@ -1,0 +1,29 @@
+/* ──── Collage ──── */
+.collage-section { background: var(--white); }
+.collage-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: repeat(2, 240px);
+  gap: 1.25rem;
+}
+.collage-item { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: var(--gray-100); }
+.collage-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.collage-item:hover img { transform: scale(1.06); }
+.collage-large { grid-column: 1; grid-row: 1 / 3; }
+.collage-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: .6rem 1rem;
+  background: linear-gradient(transparent, rgba(15,23,42,.8));
+  color: var(--white); font-size: .82rem; font-weight: 600; text-align: center;
+  transform: translateY(100%); transition: transform .3s ease;
+}
+.collage-item:hover .collage-label { transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .collage-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .collage-large { grid-column: 1 / 3; grid-row: auto; }
+}
+@media (max-width: 480px) {
+  .collage-grid  { grid-template-columns: 1fr; }
+  .collage-large { grid-column: 1; }
+}

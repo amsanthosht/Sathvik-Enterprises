@@ -1,0 +1,22 @@
+/* ──── Floating Buttons ──── */
+.fab {
+  position: fixed; display: flex; align-items: center; gap: .5rem;
+  padding: .7rem 1.2rem; border-radius: 100px;
+  font-family: var(--font); font-weight: 700; font-size: .88rem;
+  text-decoration: none; z-index: 9999;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.fab:hover { transform: translateY(-3px) scale(1.04); }
+.fab-call {
+  bottom: 5.5rem; right: 1.25rem;
+  background: var(--blue-700); color: var(--white);
+}
+.fab-whatsapp {
+  bottom: 1.25rem; right: 1.25rem;
+  background: var(--green-wa); color: var(--white);
+  animation: fabPulse 2.5s ease 1s infinite;
+}
+.fab-icon { font-size: 1.1rem; display: flex; align-items: center; }
+.fab-label { display: none; }
+@media (min-width: 640px) { .fab-label { display: inline; } }
