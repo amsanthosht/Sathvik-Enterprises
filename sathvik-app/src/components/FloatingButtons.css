@@ -1,22 +1,44 @@
-/* ──── Floating Buttons ──── */
+.fab-group {
+  position: fixed; bottom: 28px; right: 28px;
+  display: flex; flex-direction: column; gap: 12px;
+  z-index: 900;
+}
+
 .fab {
-  position: fixed; display: flex; align-items: center; gap: .5rem;
-  padding: .7rem 1.2rem; border-radius: 100px;
-  font-family: var(--font); font-weight: 700; font-size: .88rem;
-  text-decoration: none; z-index: 9999;
-  box-shadow: 0 6px 20px rgba(0,0,0,.25);
-  transition: transform .3s ease, box-shadow .3s ease;
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: #fff; text-decoration: none;
+  transition: all 0.25s cubic-bezier(.4,0,.2,1);
+  position: relative;
 }
-.fab:hover { transform: translateY(-3px) scale(1.04); }
-.fab-call {
-  bottom: 5.5rem; right: 1.25rem;
-  background: var(--blue-700); color: var(--white);
+.fab-tooltip {
+  position: absolute; right: calc(100% + 10px);
+  white-space: nowrap; background: rgba(6,15,28,0.9);
+  backdrop-filter: blur(8px);
+  color: #fff; font-size: 0.78rem; font-weight: 600;
+  padding: 6px 12px; border-radius: 6px;
+  opacity: 0; pointer-events: none;
+  transform: translateX(6px);
+  transition: all 0.2s;
+  font-family: 'Nunito Sans', sans-serif;
 }
-.fab-whatsapp {
-  bottom: 1.25rem; right: 1.25rem;
-  background: var(--green-wa); color: var(--white);
-  animation: fabPulse 2.5s ease 1s infinite;
+.fab:hover .fab-tooltip { opacity: 1; transform: translateX(0); }
+.fab:hover { transform: scale(1.1); }
+
+.fab--wa {
+  background: #25d366;
+  animation: fabPulse 2.5s ease-in-out infinite;
+  box-shadow: 0 6px 20px rgba(37,211,102,0.35);
 }
-.fab-icon { font-size: 1.1rem; display: flex; align-items: center; }
-.fab-label { display: none; }
-@media (min-width: 640px) { .fab-label { display: inline; } }
+.fab--wa:hover { background: #128c7e; box-shadow: 0 8px 24px rgba(37,211,102,0.5); }
+
+.fab--call {
+  background: var(--accent);
+  box-shadow: 0 6px 20px rgba(46,109,164,0.35);
+}
+.fab--call:hover { background: var(--accent-light); box-shadow: 0 8px 24px rgba(46,109,164,0.5); }
+
+@media (max-width: 480px) {
+  .fab-group { bottom: 20px; right: 20px; }
+  .fab { width: 48px; height: 48px; font-size: 1.1rem; }
+}

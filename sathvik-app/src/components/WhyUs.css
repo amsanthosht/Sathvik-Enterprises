@@ -1,14 +1,58 @@
-/* ──── Why Us ──── */
-.why-us { background: var(--blue-900); }
-.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-.why-card {
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
-  border-radius: var(--radius-lg); padding: 2rem 1.5rem;
-  transition: all .3s ease; backdrop-filter: blur(10px);
+.why-sec {
+  background: var(--navy-dark); padding: 96px 6%;
 }
-.why-card:hover { background: rgba(255,255,255,.1); transform: translateY(-4px); border-color: rgba(245,158,11,.4); }
-.why-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-.why-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
-.why-card p  { font-size: .9rem; color: rgba(255,255,255,.7); line-height: 1.6; }
+.why-inner { max-width: 1200px; margin: 0 auto; }
+.why-header {
+  text-align: center; margin-bottom: 56px;
+}
 
-@media (max-width: 768px) { .why-grid { grid-template-columns: 1fr; } }
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+
+.why-card {
+  background: rgba(255,255,255,0.025);
+  padding: 44px 32px; text-align: center;
+  opacity: 0; transform: translateY(22px);
+  transition: background 0.3s, opacity 0.45s ease calc(var(--wi, 0) * 0.08s), transform 0.45s ease calc(var(--wi, 0) * 0.08s);
+  position: relative;
+}
+.why-card--visible { opacity: 1; transform: none; }
+.why-card:hover { background: rgba(46,109,164,0.07); }
+
+/* Icon ring — consistent steel-blue accent, explicit values */
+.why-icon-wrap {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(46,109,164,0.18);
+  border: 1.5px solid rgba(74,141,196,0.45);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
+  box-shadow: 0 0 16px rgba(46,109,164,0.12);
+}
+.why-icon-wrap .fas,
+.why-icon-wrap .far,
+.why-icon-wrap .fab {
+  font-size: 1.4rem;
+  color: #4A8DC4;
+  transition: color 0.3s;
+}
+.why-card:hover .why-icon-wrap {
+  background: #2E6DA4;
+  border-color: #4A8DC4;
+  transform: scale(1.1);
+  box-shadow: 0 0 22px rgba(46,109,164,0.4);
+}
+.why-card:hover .why-icon-wrap .fas,
+.why-card:hover .why-icon-wrap .far,
+.why-card:hover .why-icon-wrap .fab { color: #fff; }
+
+.why-title {
+  font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 10px;
+}
+.why-desc { font-size: 0.86rem; color: rgba(255,255,255,0.42); line-height: 1.8; }
+
+@media (max-width: 1024px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .why-grid { grid-template-columns: 1fr; } .why-card { padding: 32px 24px; } }

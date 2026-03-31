@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import './Navbar.css';
 
-const NAV_LINKS = [
-  { href: '#services', label: 'Services' },
-  { href: '#why-us',   label: 'Why Us' },
-  { href: '#clients',  label: 'Clients' },
-  { href: '#about',    label: 'About' },
-  { href: '#contact',  label: 'Contact' },
+const links = [
+  { label: 'Services', href: '#services' },
+  { label: 'About',    href: '#about'    },
+  { label: 'Clients',  href: '#clients'  },
+  { label: 'Why Us',   href: '#why'      },
 ];
 
 export default function Navbar() {
@@ -15,70 +14,43 @@ export default function Navbar() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-  }, [open]);
-
   const close = () => setOpen(false);
 
-  const handleAnchor = (e, href) => {
-    e.preventDefault();
-    close();
-    const target = document.querySelector(href);
-    if (!target) return;
-    const navH = document.querySelector('.navbar')?.offsetHeight ?? 70;
-    window.scrollTo({ top: target.offsetTop - navH - 10, behavior: 'smooth' });
-  };
-
   return (
-    <>
-      {/* Dark backdrop – click to close */}
-      <div className={`nav-backdrop${open ? ' open' : ''}`} onClick={close} />
-
-      <header className={`navbar${scrolled ? ' scrolled' : ''}`}>
-        <div className="container nav-inner">
-          {/* Logo */}
-          <a href="#" className="logo" onClick={e => handleAnchor(e, '#hero')}>
-            <span className="logo-icon">⚙️</span>
-            <div>
-              <span className="logo-name">Sathvik Enterprises</span>
-              <span className="logo-tag">Manpower &amp; Facility Services</span>
-            </div>
-          </a>
-
-          {/* Desktop + Mobile drawer */}
-          <nav className={`nav-links${open ? ' open' : ''}`}>
-            {/* Mobile-only drawer header */}
-            <div className="nav-mobile-header">
-              <a href="#" className="nav-mobile-logo" onClick={e => handleAnchor(e, '#hero')}>
-                <span className="nav-mobile-logo-icon">⚙️</span>
-                <span className="nav-mobile-logo-text">Sathvik Enterprises</span>
-              </a>
-              <button className="nav-close-btn" onClick={close} aria-label="Close menu">✕</button>
-            </div>
-
-            {NAV_LINKS.map(({ href, label }) => (
-              <a key={href} href={href} className="nav-link" onClick={e => handleAnchor(e, href)}>
-                {label}
-              </a>
-            ))}
-            <a href="tel:+919876543210" className="btn-call-sm" onClick={close}>📞 Call Now</a>
-          </nav>
-
-          {/* Hamburger */}
-          <button
-            className={`hamburger${open ? ' active' : ''}`}
-            onClick={() => setOpen(o => !o)}
-            aria-label="Toggle menu"
-          >
-            <span /><span /><span />
-          </button>
+    <nav className={`nav${scrolled ? ' nav--scrolled' : ''}`} aria-label="Main navigation">
+      <a href="#hero" className="nav-brand" onClick={close}>
+        <div className="nav-logo-wrap">
+          <img src="/logo.png" alt="Sathvik Enterprises" className="nav-logo-img" />
         </div>
-      </header>
-    </>
+        <div className="nav-brand-text">
+          <span className="nav-brand-name">SATHVIK ENTERPRISES</span>
+          <span className="nav-brand-sub">✦ Maranatha ✦</span>
+        </div>
+      </a>
+
+      <ul className={`nav-links${open ? ' nav-links--open' : ''}`}>
+        {links.map(l => (
+          <li key={l.label}>
+            <a href={l.href} onClick={close}>{l.label}</a>
+          </li>
+        ))}
+        <li>
+          <a href="#contact" className="nav-cta" onClick={close}>Get a Quote</a>
+        </li>
+      </ul>
+
+      <button
+        className={`nav-ham${open ? ' nav-ham--open' : ''}`}
+        onClick={() => setOpen(o => !o)}
+        aria-label="Toggle menu"
+        aria-expanded={open}
+      >
+        <span /><span /><span />
+      </button>
+    </nav>
   );
 }

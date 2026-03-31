@@ -1,47 +1,71 @@
 import './Footer.css';
 
-const FOOTER_SERVICES = ['Manpower Services', 'Security Services', 'Electrician Manpower', 'Cleaning Services'];
-const FOOTER_COMPANY  = [
-  { href: '#about',    label: 'About Us' },
-  { href: '#clients',  label: 'Our Clients' },
-  { href: '#why-us',   label: 'Why Choose Us' },
-  { href: '#contact',  label: 'Contact' },
-];
+const QUICK = ['Services','About','Clients','Why Us','Contact'];
+const SERVICES_LIST = ['Manpower Services','Electrician Manpower','Mass Cleaning','Loading & Unloading','Plumbing & Carpentry','Requirement Services'];
 
 export default function Footer() {
-  const scrollTo = (e, href) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (!target) return;
-    const navH = document.querySelector('.navbar')?.offsetHeight ?? 70;
-    window.scrollTo({ top: target.offsetTop - navH - 10, behavior: 'smooth' });
-  };
-
+  const year = new Date().getFullYear();
   return (
     <footer className="footer">
-      <div className="container footer-inner">
-        <div className="footer-brand">
-          <span className="footer-logo-icon">⚙️</span>
-          <span className="footer-logo-name">Sathvik Enterprises</span>
-          <p>Reliable Manpower &amp; Facility Services across Tamil Nadu.</p>
+      <div className="footer-top">
+        {/* Brand */}
+        <div className="footer-brand-col">
+          <a href="#hero" className="footer-brand">
+            <div className="footer-logo">
+              <img src="/logo.png" alt="Sathvik Enterprises" className="footer-logo-img" />
+            </div>
+            <div>
+              <div className="footer-brand-name">SATHVIK ENTERPRISES</div>
+              <div className="footer-brand-sub">✦ Maranatha ✦</div>
+            </div>
+          </a>
+          <p className="footer-about">
+            Reliable manpower and facility management across Tamil Nadu.
+            Connecting the right workers with the businesses that need them most — since 2013.
+          </p>
+          <div className="footer-socials">
+            <a href="tel:8122834547"                     className="footer-social" aria-label="Call us"><i className="fas fa-phone" /></a>
+            <a href="mailto:sathvikponneri@gmail.com"    className="footer-social" aria-label="Email us"><i className="fas fa-envelope" /></a>
+            <a href="https://wa.me/918122834547" target="_blank" rel="noreferrer" className="footer-social" aria-label="WhatsApp"><i className="fab fa-whatsapp" /></a>
+          </div>
         </div>
-        <div className="footer-links">
-          <h4>Services</h4>
-          {FOOTER_SERVICES.map(s => <a href="#services" key={s} onClick={e => scrollTo(e, '#services')}>{s}</a>)}
+
+        {/* Quick Links */}
+        <div className="footer-col">
+          <h4 className="footer-col-h">Quick Links</h4>
+          <ul className="footer-links">
+            {QUICK.map(l => (
+              <li key={l}><a href={`#${l.toLowerCase().replace(' ','-')}`}>{l}</a></li>
+            ))}
+          </ul>
         </div>
-        <div className="footer-links">
-          <h4>Company</h4>
-          {FOOTER_COMPANY.map(({ href, label }) => <a href={href} key={label} onClick={e => scrollTo(e, href)}>{label}</a>)}
+
+        {/* Services */}
+        <div className="footer-col">
+          <h4 className="footer-col-h">Services</h4>
+          <ul className="footer-links">
+            {SERVICES_LIST.map(s => (
+              <li key={s}><a href="#services">{s}</a></li>
+            ))}
+          </ul>
         </div>
-        <div className="footer-contact">
-          <h4>Contact</h4>
-          <a href="tel:+919876543210">📞 +91 98765 43210</a>
-          <a href="mailto:info@sathvikenterprises.in">✉️ info@sathvikenterprises.in</a>
-          <span>📍 Tamil Nadu, India</span>
+
+        {/* Contact */}
+        <div className="footer-col">
+          <h4 className="footer-col-h">Contact</h4>
+          <ul className="footer-contact">
+            <li><i className="fas fa-user-tie" /><span>C. Gopi</span></li>
+            <li><i className="fas fa-phone-alt" /><a href="tel:8122834547">8122834547</a></li>
+            <li><i className="fas fa-phone-alt" /><a href="tel:6385096446">6385096446</a></li>
+            <li><i className="fas fa-envelope" /><a href="mailto:sathvikponneri@gmail.com">sathvikponneri@gmail.com</a></li>
+            <li><i className="fas fa-map-marker-alt" /><span>Ponneri & Gummidipoondi, Tiruvallur</span></li>
+          </ul>
         </div>
       </div>
+
       <div className="footer-bottom">
-        <p>© 2025 Sathvik Enterprises. All rights reserved. | Tamil Nadu, India</p>
+        <span>© {year} Sathvik Enterprises. All rights reserved.</span>
+        <span>Web by <a href="https://promithiumlabs.com" target="_blank" rel="noreferrer">Promithium Labs</a></span>
       </div>
     </footer>
   );

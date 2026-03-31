@@ -1,144 +1,207 @@
-import { useState } from 'react';
-import useReveal from '../hooks/useReveal';
+import { useState, useRef } from 'react';
 import './Contact.css';
 
-const WA_ICON = (
-  <svg viewBox="0 0 32 32" fill="currentColor" width="18" height="18"><path d="M16 0C7.164 0 0 7.163 0 16c0 2.822.736 5.469 2.023 7.768L0 32l8.468-2.003A15.933 15.933 0 0 0 16 32c8.836 0 16-7.163 16-16S24.836 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.773-1.852l-.484-.288-5.025 1.188 1.205-4.896-.316-.503A13.271 13.271 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333z"/></svg>
-);
+// ─── GOOGLE FORM CONFIG ────────────────────────────────────────────────────
+// 1. Go to: https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform
+// 2. Replace GOOGLE_FORM_ACTION with your form's action URL
+// 3. Right-click each field → Inspect → find name="entry.XXXXXXXXX"
+// 4. Replace each ENTRY_* value below with the real entry IDs from your form
+
+const GOOGLE_FORM_ACTION =
+  'https://docs.google.com/forms/d/e/1FAIpQLSexample_REPLACE_THIS/formResponse';
+
+const ENTRY = {
+  name:    'entry.000000001',   // ← replace with real entry ID
+  company: 'entry.000000002',
+  phone:   'entry.000000003',
+  email:   'entry.000000004',
+  service: 'entry.000000005',
+  message: 'entry.000000006',
+};
+// ──────────────────────────────────────────────────────────────────────────
 
 const SERVICES_LIST = [
-  'Manpower Services', 'Requirement Services', 'Security Services',
-  'Electrician Manpower', 'Plumbing Work', 'Carpenter Work',
-  'Painting Work', 'Loading & Unloading', 'Mass Cleaning Services', 'Multiple Services',
+  'Manpower Services', 'Requirement Services',
+  'Carpenter Services', 'Painting Work', 'Electrician Manpower',
+  'Plumbing Work', 'Loading & Unloading Service', 'Mass Cleaning Services',
+  'Multiple / All Services',
 ];
 
-const delay = ms => new Promise(r => setTimeout(r, ms));
+const CONTACT_DETAILS = [
+  { icon: 'fas fa-user-tie',       label: 'Contact Person', value: 'C. Gopi',                                       href: null },
+  { icon: 'fas fa-phone-alt',      label: 'Phone',          value: '8122834547 / 6385096446',                       href: 'tel:8122834547' },
+  { icon: 'fas fa-envelope',       label: 'Email',          value: 'sathvikponneri@gmail.com',                      href: 'mailto:sathvikponneri@gmail.com' },
+  { icon: 'fas fa-map-marker-alt', label: 'Branch Office',  value: 'No.88, Dhandapani Nadar St, Ponneri – 601 204', href: null },
+  { icon: 'fas fa-building',       label: 'Head Office',    value: 'No.116, Perumal Koil St, Ayanallur, Gummidipoondi – 601201', href: null },
+];
 
 export default function Contact() {
-  const ref = useReveal();
-  const [form, setForm] = useState({ name: '', company: '', phone: '', location: '', service: '', message: '' });
-  const [errors, setErrors] = useState({});
+  const [sent,    setSent]    = useState(false);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [fields,  setFields]  = useState({
+    name: '', company: '', phone: '', email: '', service: '', message: '',
+  });
 
-  const validate = () => {
-    const e = {};
-    if (!form.name.trim())    e.name    = true;
-    if (!form.company.trim()) e.company = true;
-    if (!form.phone.trim())   e.phone   = true;
-    if (!form.location.trim())e.location= true;
-    if (!form.service)        e.service = true;
-    return e;
-  };
+  const iframeRef = useRef(null);
 
   const handleChange = e => {
     const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
-    if (errors[name]) setErrors(er => ({ ...er, [name]: false }));
+    setFields(f => ({ ...f, [name]: value }));
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
-    await delay(1800);
-    setSuccess(true);
-    setLoading(false);
+
+    // Build the hidden form and submit it into the invisible iframe
+    // This avoids all CORS issues — Google Forms accepts cross-origin POSTs
+    const iframe = iframeRef.current;
+    const form   = document.createElement('form');
+    form.method  = 'POST';
+    form.action  = GOOGLE_FORM_ACTION;
+    form.target  = 'gf-hidden-iframe';
+
+    const addField = (name, value) => {
+      const input = document.createElement('input');
+      input.type  = 'hidden';
+      input.name  = name;
+      input.value = value;
+      form.appendChild(input);
+    };
+
+    addField(ENTRY.name,    fields.name);
+    addField(ENTRY.company, fields.company || '—');
+    addField(ENTRY.phone,   fields.phone);
+    addField(ENTRY.email,   fields.email  || '—');
+    addField(ENTRY.service, fields.service);
+    addField(ENTRY.message, fields.message || '—');
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    // Google Forms submission lands on a "recorded" page inside the iframe —
+    // we simply wait 1.5 s then show success (no server round-trip needed)
+    iframe.onload = () => {
+      setSent(true);
+      setLoading(false);
+    };
+
+    // Fallback timer in case onload doesn't fire
+    setTimeout(() => {
+      setSent(true);
+      setLoading(false);
+    }, 2000);
   };
 
   return (
-    <section className="section contact" id="contact">
-      <div className="container">
-        <div className="section-header">
-          <span className="section-eyebrow">Get In Touch</span>
-          <h2 className="section-title">Request a Free Quote</h2>
-          <p className="section-desc">Tell us your requirement. We will contact you quickly.</p>
+    <section className="contact-sec sec" id="contact">
+      {/* Hidden iframe — receives Google Form's redirect response silently */}
+      <iframe
+        ref={iframeRef}
+        name="gf-hidden-iframe"
+        title="form-submit-target"
+        style={{ display: 'none' }}
+      />
+
+      <div className="contact-header reveal">
+        <span className="sec-label">Get in Touch</span>
+        <h2 className="sec-title">Let's Build Your<br />Workforce Together</h2>
+      </div>
+
+      <div className="contact-wrap">
+        {/* Info column */}
+        <div className="contact-info reveal">
+          <h3 className="contact-info-h">Talk to us directly</h3>
+          <p className="contact-info-p">
+            Whether you need a single specialist or a complete facility management team,
+            we respond within 24 hours. Reach us by phone, email, or the form.
+          </p>
+          {CONTACT_DETAILS.map((d, i) => (
+            <div key={i} className="contact-detail">
+              <div className="contact-icon">
+                <i className={d.icon} aria-hidden="true" />
+              </div>
+              <div className="contact-detail-text">
+                <small>{d.label}</small>
+                {d.href
+                  ? <a href={d.href}>{d.value}</a>
+                  : <span>{d.value}</span>
+                }
+              </div>
+            </div>
+          ))}
+
+          <a href="https://wa.me/918122834547" className="contact-wa" target="_blank" rel="noreferrer">
+            <i className="fab fa-whatsapp" />
+            Chat on WhatsApp
+          </a>
         </div>
 
-        <div className="contact-inner" ref={ref}>
-          {/* Info */}
-          <div className="contact-info reveal">
-            <h3>Contact Details</h3>
-            <div className="info-item">
-              <span className="info-icon">📞</span>
-              <div>
-                <span className="info-label">Phone / WhatsApp</span>
-                <a href="tel:+919876543210" className="info-value">+91 98765 43210</a>
-                <a href="tel:+919876543211" className="info-value">+91 98765 43211</a>
-              </div>
+        {/* Form */}
+        <div className="contact-form-box reveal">
+          {sent ? (
+            <div className="contact-success">
+              <i className="fas fa-check-circle" aria-hidden="true" />
+              <h3>Enquiry Sent!</h3>
+              <p>Thank you — we'll get back to you within 24 hours.</p>
             </div>
-            <div className="info-item">
-              <span className="info-icon">✉️</span>
-              <div>
-                <span className="info-label">Email</span>
-                <a href="mailto:info@sathvikenterprises.in" className="info-value">info@sathvikenterprises.in</a>
-              </div>
-            </div>
-            <div className="info-item">
-              <span className="info-icon">📍</span>
-              <div>
-                <span className="info-label">Address</span>
-                <span className="info-value">Sathvik Enterprises, Tamil Nadu, India</span>
-              </div>
-            </div>
-            <div className="contact-actions">
-              <a href="tel:+919876543210" className="btn btn-primary">📞 Call Now</a>
-              <a href="https://wa.me/919876543210?text=Hello%2C%20I%20need%20manpower%20services." target="_blank" rel="noopener noreferrer" className="btn btn-whatsapp">
-                {WA_ICON} WhatsApp
-              </a>
-            </div>
-            <div className="quick-promise">
-              <div className="promise-item">⚡ Response within 2 hours</div>
-              <div className="promise-item">✅ Free consultation call</div>
-              <div className="promise-item">🔒 No spam, guaranteed</div>
-            </div>
-          </div>
-
-          {/* Form */}
-          {!success ? (
-            <form className="contact-form reveal" style={{ '--delay': '0.15s' }} onSubmit={handleSubmit} noValidate>
-              <div className="form-row">
-                <div className={`form-group${errors.name ? ' error' : ''}`}>
-                  <label htmlFor="name">Your Name *</label>
-                  <input id="name" name="name" type="text" placeholder="Rajesh Kumar" value={form.name} onChange={handleChange} />
-                </div>
-                <div className={`form-group${errors.company ? ' error' : ''}`}>
-                  <label htmlFor="company">Company Name *</label>
-                  <input id="company" name="company" type="text" placeholder="ABC Industries Pvt Ltd" value={form.company} onChange={handleChange} />
-                </div>
-              </div>
-              <div className="form-row">
-                <div className={`form-group${errors.phone ? ' error' : ''}`}>
-                  <label htmlFor="phone">Phone Number *</label>
-                  <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={handleChange} />
-                </div>
-                <div className={`form-group${errors.location ? ' error' : ''}`}>
-                  <label htmlFor="location">Your Location *</label>
-                  <input id="location" name="location" type="text" placeholder="Chennai, Tamil Nadu" value={form.location} onChange={handleChange} />
-                </div>
-              </div>
-              <div className={`form-group${errors.service ? ' error' : ''}`}>
-                <label htmlFor="service">Service Required *</label>
-                <select id="service" name="service" value={form.service} onChange={handleChange}>
-                  <option value="">— Select a Service —</option>
-                  {SERVICES_LIST.map(s => <option key={s}>{s}</option>)}
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="message">Your Message / Requirement</label>
-                <textarea id="message" name="message" rows="4" placeholder="Describe your requirement, number of workers needed, duration, etc." value={form.message} onChange={handleChange} />
-              </div>
-              <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
-                {loading ? '⏳ Sending...' : '📨 Send My Request'}
-              </button>
-            </form>
           ) : (
-            <div className="contact-form form-success reveal" style={{ '--delay': '0.15s' }}>
-              <div className="success-icon">✅</div>
-              <h3>Request Sent Successfully!</h3>
-              <p>Thank you! Our team will contact you shortly.</p>
-            </div>
+            <>
+              <h3 className="contact-form-h">Send an Enquiry</h3>
+              <p className="contact-form-sub">We'll reply with pricing and availability within 24 hours.</p>
+
+              <form className="contact-form" onSubmit={handleSubmit} noValidate>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="f-name">Your Name *</label>
+                    <input id="f-name" type="text" name="name" placeholder="e.g. Rajesh Kumar" required
+                      value={fields.name} onChange={handleChange} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="f-company">Company</label>
+                    <input id="f-company" type="text" name="company" placeholder="Company name (optional)"
+                      value={fields.company} onChange={handleChange} />
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="f-phone">Phone *</label>
+                    <input id="f-phone" type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required
+                      value={fields.phone} onChange={handleChange} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="f-email">Email</label>
+                    <input id="f-email" type="email" name="email" placeholder="you@example.com"
+                      value={fields.email} onChange={handleChange} />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="f-service">Service Required *</label>
+                  <select id="f-service" name="service" required value={fields.service} onChange={handleChange}>
+                    <option value="">Select a service…</option>
+                    {SERVICES_LIST.map(s => <option key={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="f-msg">Your Requirements</label>
+                  <textarea id="f-msg" name="message" rows="4"
+                    placeholder="Tell us your project needs — workers required, duration, location…"
+                    value={fields.message} onChange={handleChange} />
+                </div>
+
+                <button type="submit" className="btn-navy btn-full" disabled={loading}>
+                  {loading
+                    ? <><i className="fas fa-spinner fa-spin" /> Sending…</>
+                    : <><i className="fas fa-paper-plane" /> Send Enquiry</>
+                  }
+                </button>
+                <p className="form-note">
+                  <i className="fas fa-lock" aria-hidden="true" />
+                  Your details are kept confidential and used only to respond to your enquiry.
+                </p>
+              </form>
+            </>
           )}
         </div>
       </div>
