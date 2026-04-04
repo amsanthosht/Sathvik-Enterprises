@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import './Services.css';
+import guardImg from '../assets/guard.png';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // All images: authentic, non-AI stock photography from Unsplash (royalty-free)
@@ -83,7 +84,7 @@ const ALL_SERVICES = [
     title: 'Guarding',
     desc: 'Uniformed, trained security personnel for factory gates, construction sites and corporate premises — reliable 24/7 coverage.',
     // Male security guard portrait — Freepik (user-provided)
-    img: '../src/assets/guard.png',
+    img: guardImg,
     imgAlt: 'Portrait of male security guard standing by barbed wire fence on duty',
     icon: 'fas fa-shield-alt',
   },
