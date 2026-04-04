@@ -12,9 +12,9 @@ export default function FinalCTA() {
           and reliable workers ready to deploy across Tamil Nadu.
         </p>
         <div className="cta-actions">
-          <a href="tel:8122834547" className="btn-gold">
+          <a href="tel:+916385095546" className="btn-gold">
             <i className="fas fa-phone-alt" />
-            Call 8122834547
+            Call 6385095546
           </a>
           <a href="#contact" className="btn-ghost">
             Send an Enquiry <i className="fas fa-arrow-right" />

@@ -29,7 +29,7 @@ const SERVICES_LIST = [
 
 const CONTACT_DETAILS = [
   { icon: 'fas fa-user-tie',       label: 'Contact Person', value: 'C. Gopi',                                       href: null },
-  { icon: 'fas fa-phone-alt',      label: 'Phone',          value: '8122834547 / 6385096446',                       href: 'tel:8122834547' },
+  { icon: 'fas fa-phone-alt',      label: 'Phone',          value: '6385095546',                                    href: 'tel:+916385095546' },
   { icon: 'fas fa-envelope',       label: 'Email',          value: 'sathvikponneri@gmail.com',                      href: 'mailto:sathvikponneri@gmail.com' },
   { icon: 'fas fa-map-marker-alt', label: 'Branch Office',  value: 'No.88, Dhandapani Nadar St, Ponneri – 601 204', href: null },
   { icon: 'fas fa-building',       label: 'Head Office',    value: 'No.116, Perumal Koil St, Ayanallur, Gummidipoondi – 601201', href: null },
@@ -132,7 +132,7 @@ export default function Contact() {
             </div>
           ))}
 
-          <a href="https://wa.me/918122834547" className="contact-wa" target="_blank" rel="noreferrer">
+          <a href="https://wa.me/916385095546" className="contact-wa" target="_blank" rel="noreferrer">
             <i className="fab fa-whatsapp" />
             Chat on WhatsApp
           </a>

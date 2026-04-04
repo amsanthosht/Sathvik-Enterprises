@@ -1,21 +1,33 @@
+/* ─── Section ───────────────────────────────────────────── */
 .services { background: var(--gray-bg); }
 
 .services-head {
   display: flex; justify-content: space-between; align-items: flex-end;
-  margin-bottom: 56px; gap: 24px; flex-wrap: wrap;
+  margin-bottom: 48px; gap: 24px; flex-wrap: wrap;
 }
 .services-head .sec-sub { max-width: 420px; }
 
+/* ─── Grid ──────────────────────────────────────────────── */
 .services-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.services-grid--photo {
+  grid-template-columns: repeat(3, 1fr);
 }
 
+/* ─── Card base ─────────────────────────────────────────── */
 .svc-card {
   background: var(--white); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 36px 28px;
   position: relative; overflow: hidden;
   opacity: 0; transform: translateY(24px);
-  transition: opacity 0.5s ease var(--delay, 0s), transform 0.5s ease var(--delay, 0s), box-shadow 0.3s, border-color 0.3s;
+  transition:
+    opacity 0.5s ease var(--delay, 0s),
+    transform 0.5s ease var(--delay, 0s),
+    box-shadow 0.3s,
+    border-color 0.3s;
   cursor: default;
 }
 .svc-card--visible {
@@ -26,6 +38,8 @@
   box-shadow: 0 20px 48px rgba(11,31,58,0.1);
   border-color: transparent;
 }
+
+/* Animated bottom accent bar */
 .svc-bar {
   position: absolute; left: 0; bottom: 0; right: 0; height: 3px;
   background: linear-gradient(90deg, var(--accent), var(--accent-light));
@@ -34,6 +48,7 @@
 }
 .svc-card:hover .svc-bar { transform: scaleX(1); }
 
+/* ─── Icon card (legacy support) ────────────────────────── */
 .svc-card-top {
   display: flex; justify-content: space-between; align-items: flex-start;
   margin-bottom: 20px;
@@ -54,9 +69,71 @@
 }
 
 .svc-title {
-  font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 10px;
+  font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 10px;
 }
-.svc-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+.svc-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.75; }
 
-@media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 640px)  { .services-grid { grid-template-columns: 1fr; } .services-head { flex-direction: column; align-items: flex-start; } }
+/* ─── Photo card ─────────────────────────────────────────── */
+.svc-card--photo {
+  padding: 0;
+  display: flex; flex-direction: column;
+}
+
+/* Uniform 16:9 aspect ratio across all cards */
+.svc-photo-wrap {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; flex-shrink: 0;
+  overflow: hidden; border-radius: var(--radius) var(--radius) 0 0;
+}
+.svc-photo-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.svc-card--photo:hover .svc-photo-wrap img {
+  transform: scale(1.06);
+}
+
+.svc-photo-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(11,31,58,0.1) 0%, rgba(11,31,58,0.55) 100%);
+  display: flex; align-items: flex-end; padding: 16px;
+  transition: background 0.3s;
+}
+.svc-card--photo:hover .svc-photo-overlay {
+  background: linear-gradient(to bottom, rgba(11,31,58,0.15) 0%, rgba(46,109,164,0.6) 100%);
+}
+
+.svc-icon--overlay {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(6px);
+  color: #fff; font-size: 1.15rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.svc-card--photo:hover .svc-icon--overlay {
+  background: var(--accent);
+}
+
+.svc-card-body {
+  padding: 20px 22px 26px;
+  display: flex; flex-direction: column; flex: 1;
+}
+.svc-card--photo .svc-num {
+  display: block; margin-bottom: 5px; color: var(--accent-light);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 1px;
+}
+.svc-card--photo .svc-title {
+  font-size: 1rem; margin-bottom: 7px;
+}
+
+/* ─── Responsive ────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .services-grid,
+  .services-grid--photo { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .services-grid,
+  .services-grid--photo { grid-template-columns: 1fr; }
+  .services-head { flex-direction: column; align-items: flex-start; }
+}

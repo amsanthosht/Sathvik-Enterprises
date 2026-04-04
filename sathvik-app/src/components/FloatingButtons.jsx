@@ -4,7 +4,7 @@ export default function FloatingButtons() {
   return (
     <div className="fab-group" aria-label="Quick contact">
       <a
-        href="https://wa.me/918122834547"
+        href="https://wa.me/916385095546"
         className="fab fab--wa"
         target="_blank"
         rel="noreferrer"
@@ -14,7 +14,7 @@ export default function FloatingButtons() {
         <span className="fab-tooltip">Chat on WhatsApp</span>
       </a>
       <a
-        href="tel:8122834547"
+        href="tel:+916385095546"
         className="fab fab--call"
         aria-label="Call us"
       >

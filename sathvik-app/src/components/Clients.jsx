@@ -1,47 +1,145 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Clients.css';
 
-const CLIENTS = [
+// ── PRODUCTION COMPANIES ──────────────────────────────────────────────────────
+const PRODUCTION_CLIENTS = [
   {
-    name: 'M/s Shimizu Corporation Pvt Ltd',
-    location: 'Peruvoyal, Origins of Mahindra City, Tamil Nadu',
-    logo: '/logos/shimizu.png',
-    tag: 'Construction & Infrastructure',
+    name: 'Dmart',
+    location: 'Chennai, India',
+    logo: 'https://findvectorlogo.com/wp-content/uploads/2018/12/dmart-vector-logo.png',
+    tag: 'Retail & Consumer Goods',
+    initials: 'DM',
     bg: '#fff',
   },
   {
-    name: 'M/s Knight Frank (India) Pvt Ltd',
-    location: 'Nungambakkam, Chennai – 600018, Tamil Nadu',
-    logo: '/logos/knight-frank.png',
-    tag: 'Real Estate & Facility Management',
+    name: 'Omran',
+    location: 'Sultanate of Oman',
+    logo: 'https://images.seeklogo.com/logo-png/34/2/omran-logo-png_seeklogo-343497.png',
+    tag: 'Infrastructure & Investment',
+    initials: 'OM',
     bg: '#fff',
   },
   {
-    name: 'M/s Transdien Private Limited',
-    location: 'Peruvoyal, Origins of Mahindra City, Tamil Nadu',
-    logo: '/logos/transdien.jpg',
-    tag: 'Industrial Services',
+    name: 'Konspec',
+    location: 'Mangalore, India',
+    logo: 'https://konspec.com/wp-content/uploads/2024/05/Konspec-web1.png',
+    tag: 'Production & Manufacturing',
+    initials: 'KS',
     bg: '#fff',
   },
   {
-    name: 'M/s MOD Forge (P) Ltd',
-    location: '52, Eliambedu Village, Ponneri, Tamil Nadu',
-    logo: '/logos/mod-forge.jpg',
-    tag: 'Forging & Manufacturing',
-    bg: '#f8f8f8',
+    name: 'Proconnect Supply Chain',
+    location: 'Chennai, India',
+    logo: 'https://proconnectlogistics.com/v1/wp-content/themes/proconnect-theme/framework/dist/img/logo-full-color.png',
+    tag: 'Logistics & Supply Chain',
+    initials: 'PC',
+    bg: '#fff',
+  },
+  {
+    name: 'SAC Engine Components Pvt Ltd',
+    location: 'Chennai / Gummidipoondi, India',
+    logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg3fPgWNTdEl6z69UhN8Pwj5u-u_il2cKcsQ&s',
+    tag: 'Engine & Auto Components',
+    initials: 'SAC',
+    bg: '#fff',
   },
 ];
 
-export default function Clients() {
-  const cardsRef = useRef([]);
+// ── CONSTRUCTION COMPANIES ────────────────────────────────────────────────────
+const CONSTRUCTION_CLIENTS = [
+  {
+    name: 'Shimizu Corporation',
+    location: 'HQ: Tokyo, Japan · India Office: Bengaluru',
+    logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJvCooATroK_9R85dUWyHs6CYJckB-lGr40Q&s',
+    tag: 'Construction & Engineering',
+    initials: 'SC',
+    bg: '#fff',
+  },
+  {
+    name: 'Knight Frank India',
+    location: 'Nungambakkam, Chennai – 600018, Tamil Nadu',
+    logo: 'https://media.licdn.com/dms/image/v2/C560BAQGRR2TtoVlYRg/company-logo_200_200/company-logo_200_200/0/1630666625117?e=2147483647&v=beta&t=Fftvvsm-bJUYXM_KM6DsCvYIKrfX97aXTzN5BYlx8L4',
+    tag: 'Real Estate & Facility Management',
+    initials: 'KF',
+    bg: '#fff',
+  },
+  {
+    name: 'Transdien Private Limited',
+    location: 'Peruvoyal, Mahindra City, Tamil Nadu',
+    logo: 'https://media.licdn.com/dms/image/v2/D563DAQHDt7FXnLic_A/image-scale_191_1128/B56ZsBb2j9HkAc-/0/1765255638079/transdien_private_limited_cover?e=2147483647&v=beta&t=BAEmYGCpKb3aKz-mCR4dt_eye4ZTpV0m7l3X9REEAkY',
+    tag: 'Industrial Services',
+    initials: 'TD',
+    bg: '#fff',
+  },
+  {
+    name: 'MOD Forge (P) Ltd',
+    location: '52, Eliambedu Village, Ponneri, Tamil Nadu',
+    logo: 'https://media.licdn.com/dms/image/v2/C560BAQGGW_JDfgK0MA/company-logo_200_200/company-logo_200_200/0/1630637084563?e=2147483647&v=beta&t=X0M3AvInWGyH_Dt_gWWmgv4rmDavdggkU1zl38RVwXE',
+    tag: 'Forging & Manufacturing',
+    initials: 'MF',
+    bg: '#fff',
+  },
+];
+
+const TABS = [
+  { id: 'construction', label: 'Construction Companies', icon: 'fas fa-hard-hat', data: CONSTRUCTION_CLIENTS },
+  { id: 'production',   label: 'Production Companies',   icon: 'fas fa-industry',  data: PRODUCTION_CLIENTS  },
+];
+
+// Logo with graceful error-fallback to styled initials badge
+function ClientLogo({ client }) {
+  const [failed, setFailed] = useState(false);
+
+  if (!client.logo || failed) {
+    return <div className="client-initials">{client.initials}</div>;
+  }
+
+  return (
+    <img
+      src={client.logo}
+      alt={`${client.name} logo`}
+      loading="lazy"
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
+function ClientCard({ client, index }) {
+  const ref = useRef(null);
 
   useEffect(() => {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('client-card--visible'); });
-    }, { threshold: 0.15 });
-    cardsRef.current.forEach(el => el && obs.observe(el));
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) { el.classList.add('client-card--visible'); obs.disconnect(); }
+      },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
     return () => obs.disconnect();
   }, []);
+
+  return (
+    <article ref={ref} className="client-card" style={{ '--ci': index }}>
+      <div className="client-logo-box" style={{ background: client.bg }}>
+        <ClientLogo client={client} />
+      </div>
+      <div className="client-info">
+        <span className="client-tag">{client.tag}</span>
+        <h3 className="client-name">{client.name}</h3>
+        <p className="client-loc">
+          <i className="fas fa-map-marker-alt" aria-hidden="true" />
+          {client.location}
+        </p>
+      </div>
+    </article>
+  );
+}
+
+export default function Clients() {
+  const [activeTab, setActiveTab] = useState('construction');
+  const activeData = TABS.find(t => t.id === activeTab).data;
 
   return (
     <section className="clients-sec sec" id="clients">
@@ -54,26 +152,25 @@ export default function Clients() {
         </p>
       </div>
 
-      <div className="clients-grid">
-        {CLIENTS.map((c, i) => (
-          <article
-            key={i}
-            className="client-card"
-            ref={el => (cardsRef.current[i] = el)}
-            style={{ '--ci': i }}
+      {/* Tab switcher */}
+      <div className="clients-tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`clients-tab-btn${activeTab === tab.id ? ' clients-tab-btn--active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+            aria-pressed={activeTab === tab.id}
           >
-            <div className="client-logo-box" style={{ background: c.bg }}>
-              <img src={c.logo} alt={c.name} loading="lazy" />
-            </div>
-            <div className="client-info">
-              <span className="client-tag">{c.tag}</span>
-              <h3 className="client-name">{c.name}</h3>
-              <p className="client-loc">
-                <i className="fas fa-map-marker-alt" aria-hidden="true" />
-                {c.location}
-              </p>
-            </div>
-          </article>
+            <i className={tab.icon} aria-hidden="true" />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Cards grid */}
+      <div className="clients-grid" key={activeTab}>
+        {activeData.map((c, i) => (
+          <ClientCard key={c.name} client={c} index={i} />
         ))}
       </div>
 

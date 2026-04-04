@@ -24,9 +24,9 @@ export default function Footer() {
             Connecting the right workers with the businesses that need them most — since 2013.
           </p>
           <div className="footer-socials">
-            <a href="tel:8122834547"                     className="footer-social" aria-label="Call us"><i className="fas fa-phone" /></a>
+            <a href="tel:+916385095546"                    className="footer-social" aria-label="Call us"><i className="fas fa-phone" /></a>
             <a href="mailto:sathvikponneri@gmail.com"    className="footer-social" aria-label="Email us"><i className="fas fa-envelope" /></a>
-            <a href="https://wa.me/918122834547" target="_blank" rel="noreferrer" className="footer-social" aria-label="WhatsApp"><i className="fab fa-whatsapp" /></a>
+            <a href="https://wa.me/916385095546" target="_blank" rel="noreferrer" className="footer-social" aria-label="WhatsApp"><i className="fab fa-whatsapp" /></a>
           </div>
         </div>
 
@@ -55,8 +55,7 @@ export default function Footer() {
           <h4 className="footer-col-h">Contact</h4>
           <ul className="footer-contact">
             <li><i className="fas fa-user-tie" /><span>C. Gopi</span></li>
-            <li><i className="fas fa-phone-alt" /><a href="tel:8122834547">8122834547</a></li>
-            <li><i className="fas fa-phone-alt" /><a href="tel:6385096446">6385096446</a></li>
+            <li><i className="fas fa-phone-alt" /><a href="tel:+916385095546">6385095546</a></li>
             <li><i className="fas fa-envelope" /><a href="mailto:sathvikponneri@gmail.com">sathvikponneri@gmail.com</a></li>
             <li><i className="fas fa-map-marker-alt" /><span>Ponneri & Gummidipoondi, Tiruvallur</span></li>
           </ul>
