@@ -83,7 +83,7 @@ const ALL_SERVICES = [
     title: 'Guarding',
     desc: 'Uniformed, trained security personnel for factory gates, construction sites and corporate premises — reliable 24/7 coverage.',
     // Male security guard portrait — Freepik (user-provided)
-    img: 'https://img.freepik.com/free-photo/portrait-male-security-guard-with-barbed-wire-fence_23-2150368768.jpg?w=800',
+    img: '../src/assets/guard.png',
     imgAlt: 'Portrait of male security guard standing by barbed wire fence on duty',
     icon: 'fas fa-shield-alt',
   },

@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import './Clients.css';
+import knightLogo from '../assets/knight.jpg';
+import transLogo from '../assets/trans.jpg';
+import affLogo from '../assets/aff.jpg';
 
 // ── PRODUCTION COMPANIES ──────────────────────────────────────────────────────
 const PRODUCTION_CLIENTS = [
@@ -58,7 +61,7 @@ const CONSTRUCTION_CLIENTS = [
   {
     name: 'Knight Frank India',
     location: 'Nungambakkam, Chennai – 600018, Tamil Nadu',
-    logo: 'https://media.licdn.com/dms/image/v2/C560BAQGRR2TtoVlYRg/company-logo_200_200/company-logo_200_200/0/1630666625117?e=2147483647&v=beta&t=Fftvvsm-bJUYXM_KM6DsCvYIKrfX97aXTzN5BYlx8L4',
+    logo: knightLogo,
     tag: 'Real Estate & Facility Management',
     initials: 'KF',
     bg: '#fff',
@@ -66,7 +69,7 @@ const CONSTRUCTION_CLIENTS = [
   {
     name: 'Transdien Private Limited',
     location: 'Peruvoyal, Mahindra City, Tamil Nadu',
-    logo: 'https://media.licdn.com/dms/image/v2/D563DAQHDt7FXnLic_A/image-scale_191_1128/B56ZsBb2j9HkAc-/0/1765255638079/transdien_private_limited_cover?e=2147483647&v=beta&t=BAEmYGCpKb3aKz-mCR4dt_eye4ZTpV0m7l3X9REEAkY',
+    logo: transLogo,
     tag: 'Industrial Services',
     initials: 'TD',
     bg: '#fff',
@@ -74,7 +77,7 @@ const CONSTRUCTION_CLIENTS = [
   {
     name: 'MOD Forge (P) Ltd',
     location: '52, Eliambedu Village, Ponneri, Tamil Nadu',
-    logo: 'https://media.licdn.com/dms/image/v2/C560BAQGGW_JDfgK0MA/company-logo_200_200/company-logo_200_200/0/1630637084563?e=2147483647&v=beta&t=X0M3AvInWGyH_Dt_gWWmgv4rmDavdggkU1zl38RVwXE',
+    logo: affLogo,
     tag: 'Forging & Manufacturing',
     initials: 'MF',
     bg: '#fff',
