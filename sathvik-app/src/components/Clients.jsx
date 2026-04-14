@@ -15,6 +15,14 @@ const PRODUCTION_CLIENTS = [
     bg: '#fff',
   },
   {
+    name: 'MOD Forge (P) Ltd',
+    location: '52, Eliambedu Village, Ponneri, Tamil Nadu',
+    logo: affLogo,
+    tag: 'Forging & Manufacturing',
+    initials: 'MF',
+    bg: '#fff',
+  },
+  {
     name: 'Omran',
     location: 'Sultanate of Oman',
     logo: 'https://images.seeklogo.com/logo-png/34/2/omran-logo-png_seeklogo-343497.png',
@@ -72,14 +80,6 @@ const CONSTRUCTION_CLIENTS = [
     logo: transLogo,
     tag: 'Industrial Services',
     initials: 'TD',
-    bg: '#fff',
-  },
-  {
-    name: 'MOD Forge (P) Ltd',
-    location: '52, Eliambedu Village, Ponneri, Tamil Nadu',
-    logo: affLogo,
-    tag: 'Forging & Manufacturing',
-    initials: 'MF',
     bg: '#fff',
   },
 ];
